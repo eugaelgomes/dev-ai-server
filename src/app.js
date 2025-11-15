@@ -124,40 +124,6 @@ app.get("/", (req, res) => {
     </div>
 
     <div class="section">
-      <h2>Endpoints Disponíveis</h2>
-      
-      <div class="endpoint">
-        <div>
-          <span class="method">POST</span>
-          <span class="path">/search</span>
-        </div>
-        <div class="description">
-          Realiza buscas usando IA com suporte a conversação contextual
-        </div>
-      </div>
-
-      <div class="endpoint">
-        <div>
-          <span class="method">GET</span>
-          <span class="path">/session/:sessionId</span>
-        </div>
-        <div class="description">
-          Obtém informações sobre uma sessão específica
-        </div>
-      </div>
-
-      <div class="endpoint">
-        <div>
-          <span class="method">GET</span>
-          <span class="path">/health</span>
-        </div>
-        <div class="description">
-          Verifica o status do servidor e número de sessões ativas
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
       <h2>Recursos</h2>
       <div class="features">
         <div class="feature">
