@@ -146,7 +146,7 @@ app.get("/", (req, res) => {
     </div>
 
     <div class="footer">
-      <p>Desenvolvido por Gael Gomes</p>
+      <p>Desenvolvido por <a href="https://gaelgomes.dev" target="_blank" rel="noopener noreferrer">Gael Gomes</a></p>
     </div>
   </div>
 </body>
