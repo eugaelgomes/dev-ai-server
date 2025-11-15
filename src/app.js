@@ -23,6 +23,171 @@ app.use(generalLimiter);
 // Inicializa o gerenciador de contexto
 const messageContext = getMessageContext(SESSION_CONFIG);
 
+// Rota principal
+app.get("/", (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Server API</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: monospace;
+      background: #fff;
+      color: #000;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      border: 2px solid #000;
+      padding: 30px;
+    }
+    .header {
+      border-bottom: 2px solid #000;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 16px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #000;
+      padding-bottom: 5px;
+    }
+    .endpoint {
+      background: #f0f0f0;
+      border: 1px solid #000;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+    .method {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+    .path {
+      font-weight: bold;
+    }
+    .description {
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .feature {
+      border: 1px solid #000;
+      padding: 15px;
+      text-align: center;
+    }
+    .feature strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .feature-desc {
+      font-size: 12px;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #000;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>AI Server API</h1>
+      <p class="subtitle">Servidor de IA com Perplexity e Google Gemini</p>
+    </div>
+
+    <div class="section">
+      <h2>Endpoints Disponíveis</h2>
+      
+      <div class="endpoint">
+        <div>
+          <span class="method">POST</span>
+          <span class="path">/search</span>
+        </div>
+        <div class="description">
+          Realiza buscas usando IA com suporte a conversação contextual
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div>
+          <span class="method">GET</span>
+          <span class="path">/session/:sessionId</span>
+        </div>
+        <div class="description">
+          Obtém informações sobre uma sessão específica
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div>
+          <span class="method">GET</span>
+          <span class="path">/health</span>
+        </div>
+        <div class="description">
+          Verifica o status do servidor e número de sessões ativas
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Recursos</h2>
+      <div class="features">
+        <div class="feature">
+          <strong>Múltiplos Modelos</strong>
+          <div class="feature-desc">Perplexity & Gemini</div>
+        </div>
+        <div class="feature">
+          <strong>Contexto</strong>
+          <div class="feature-desc">Conversação contínua</div>
+        </div>
+        <div class="feature">
+          <strong>Rate Limiting</strong>
+          <div class="feature-desc">Proteção integrada</div>
+        </div>
+        <div class="feature">
+          <strong>Sessões</strong>
+          <div class="feature-desc">Gerenciamento automático</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Desenvolvido por Gael Gomes</p>
+    </div>
+  </div>
+</body>
+</html>
+  `);
+});
+
 app.post("/search", searchLimiter, validateSearchRequest, async (req, res, next) => {
   const { validatedMessage, validatedSubjects, selectedModel, selectedProvider, sessionId } = req;
 
