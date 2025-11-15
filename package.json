@@ -1,0 +1,36 @@
+{
+  "name": "ai-server",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/eugaelgomes/ai-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/eugaelgomes/ai-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eugaelgomes/ai-mcp.git"
+  },
+  "license": "ISC",
+  "author": "Gael Gomes",
+  "domain": "dev-ai.gaelgomes.dev",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "dist src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@perplexity-ai/perplexity_ai": "^0.16.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "node-cron": "^4.2.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-plugin-prettier": "^5.5.4",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.6.2"
+  }
+}
