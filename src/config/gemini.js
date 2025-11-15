@@ -1,7 +1,7 @@
 const { getCombinedContext } = require("./constants");
 
 /**
- * Gera a mensagem do sistema para o Perplexity
+ * Gera a mensagem do sistema para o Gemini
  * @param {Array<string>|string} subjects - Assunto(s) escolhido(s)
  * @returns {Object} Mensagem do sistema formatada
  */
