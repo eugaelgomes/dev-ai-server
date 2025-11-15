@@ -1,21 +1,29 @@
 const express = require("express");
+
+// -- Perplexity AI e Gemini --
 const Perplexity = require("@perplexity-ai/perplexity_ai");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// -- Utilitários e Middlewares --
 const { getMessageContext } = require("./utils/message-context");
 const { getSystemMessage: getPerplexitySystemMessage } = require("./config/perplexity");
 const { getSystemMessage: getGeminiSystemMessage } = require("./config/gemini");
 const { SESSION_CONFIG } = require("./config/constants");
 const { validateSearchRequest } = require("./middlewares/validator");
 const { errorHandler, notFoundHandler } = require("./middlewares/error-handler");
+const { generalLimiter, searchLimiter } = require("./middlewares/rate-limit");
 
 const app = express();
 
 app.use(express.json());
 
+// Aplica rate limit geral a todas as rotas
+app.use(generalLimiter);
+
 // Inicializa o gerenciador de contexto
 const messageContext = getMessageContext(SESSION_CONFIG);
 
-app.post("/search", validateSearchRequest, async (req, res, next) => {
+app.post("/search", searchLimiter, validateSearchRequest, async (req, res, next) => {
   const { validatedMessage, validatedSubjects, selectedModel, selectedProvider, sessionId } = req;
 
   try {
@@ -110,45 +118,6 @@ app.get("/session/:sessionId", async (req, res, next) => {
     }
 
     res.json(sessionInfo);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Endpoint para listar todas as sessões ativas
-app.get("/sessions", async (req, res, next) => {
-  try {
-    const sessions = await messageContext.listSessions();
-    res.json({
-      total: sessions.length,
-      sessions,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Endpoint para deletar uma sessão específica
-app.delete("/session/:sessionId", async (req, res, next) => {
-  try {
-    const { sessionId } = req.params;
-    const deleted = await messageContext.deleteSession(sessionId);
-
-    if (!deleted) {
-      return res.status(404).json({ error: "Session not found" });
-    }
-
-    res.json({ message: "Session deleted successfully", sessionId });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Endpoint para limpar todas as sessões
-app.delete("/sessions", async (req, res, next) => {
-  try {
-    const count = await messageContext.clearAllSessions();
-    res.json({ message: "All sessions cleared", count });
   } catch (error) {
     next(error);
   }
