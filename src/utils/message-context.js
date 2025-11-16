@@ -10,12 +10,12 @@ class MessageContext {
   constructor(options = {}) {
     // Cache em memória para sessões ativas
     this.conversations = new Map();
-    
+
     // Configurações
     this.maxMessagesPerSession = options.maxMessagesPerSession || 20;
     this.sessionTimeout = options.sessionTimeout || 30 * 60 * 1000; // 30 minutos padrão
     this.useDatabase = options.useDatabase !== false; // Ativa DB por padrão
-    
+
     // Limpa sessões expiradas periodicamente
     this.startCleanupInterval();
   }
@@ -24,9 +24,12 @@ class MessageContext {
    * Inicia limpeza periódica de sessões expiradas
    */
   startCleanupInterval() {
-    setInterval(() => {
-      this.cleanExpiredSessions();
-    }, 5 * 60 * 1000); // Verifica a cada 5 minutos
+    setInterval(
+      () => {
+        this.cleanExpiredSessions();
+      },
+      5 * 60 * 1000
+    ); // Verifica a cada 5 minutos
   }
 
   /**
@@ -52,7 +55,10 @@ class MessageContext {
         );
         cleanedCount += dbCleaned;
       } catch (error) {
-        console.error("Error cleaning expired sessions from database:", error.message);
+        console.error(
+          "Error cleaning expired sessions from database:",
+          error.message
+        );
       }
     }
 
@@ -81,7 +87,7 @@ class MessageContext {
     if (!this.conversations.has(sessionId)) {
       this.conversations.set(sessionId, {
         id: sessionId,
-        subject: subject,
+        subject,
         messages: [],
         createdAt: Date.now(),
         lastActivity: Date.now(),
@@ -90,7 +96,7 @@ class MessageContext {
 
     const session = this.conversations.get(sessionId);
     session.lastActivity = Date.now();
-    
+
     return session;
   }
 
@@ -103,7 +109,7 @@ class MessageContext {
    */
   async addMessage(sessionId, role, content, metadata = {}) {
     const session = this.conversations.get(sessionId);
-    
+
     if (!session) {
       throw new Error(`Session ${sessionId} not found`);
     }
@@ -112,11 +118,14 @@ class MessageContext {
     if (this.useDatabase) {
       try {
         await messageService.addMessage(sessionId, role, content, metadata);
-        
+
         // Limita mensagens no banco
         const messageCount = await messageService.countMessages(sessionId);
         if (messageCount > this.maxMessagesPerSession) {
-          await messageService.trimMessages(sessionId, this.maxMessagesPerSession);
+          await messageService.trimMessages(
+            sessionId,
+            this.maxMessagesPerSession
+          );
         }
       } catch (error) {
         console.error("Error adding message to database:", error.message);
@@ -135,12 +144,12 @@ class MessageContext {
 
     // Limita o número de mensagens mantendo as mais recentes
     if (session.messages.length > this.maxMessagesPerSession) {
-      const systemMessage = session.messages.find(m => m.role === 'system');
+      const systemMessage = session.messages.find((m) => m.role === "system");
       const recentMessages = session.messages
-        .filter(m => m.role !== 'system')
+        .filter((m) => m.role !== "system")
         .slice(-this.maxMessagesPerSession + (systemMessage ? 1 : 0));
-      
-      session.messages = systemMessage 
+
+      session.messages = systemMessage
         ? [systemMessage, ...recentMessages]
         : recentMessages;
     }
@@ -157,12 +166,12 @@ class MessageContext {
    */
   async getMessagesForAPI(sessionId, includeSystem = true) {
     const session = this.conversations.get(sessionId);
-    
+
     // Se tiver em memória, usa
     if (session && session.messages.length > 0) {
       return session.messages
-        .filter(m => includeSystem || m.role !== 'system')
-        .map(m => ({
+        .filter((m) => includeSystem || m.role !== "system")
+        .map((m) => ({
           role: m.role,
           content: m.content,
         }));
@@ -210,7 +219,7 @@ class MessageContext {
 
     // Fallback para memória
     const session = this.conversations.get(sessionId);
-    
+
     if (!session) {
       return null;
     }
@@ -233,7 +242,7 @@ class MessageContext {
     if (this.useDatabase) {
       try {
         const sessions = await sessionService.listSessions();
-        return sessions.map(s => ({
+        return sessions.map((s) => ({
           id: s.session_id,
           subject: s.subject,
           messageCount: parseInt(s.message_count, 10),
@@ -246,7 +255,7 @@ class MessageContext {
     }
 
     // Fallback para memória
-    return Array.from(this.conversations.values()).map(session => ({
+    return Array.from(this.conversations.values()).map((session) => ({
       id: session.id,
       subject: session.subject,
       messageCount: session.messages.length,
@@ -274,15 +283,15 @@ class MessageContext {
 
     // Remove da memória
     const memoryDeleted = this.conversations.delete(sessionId);
-    
+
     return deleted || memoryDeleted;
   }
 
   /**
    * Limpa todas as sessões
-   * @returns {Promise<number>} Quantidade de sessões removidas
+   * @returns {number} Quantidade de sessões removidas
    */
-  async clearAllSessions() {
+  clearAllSessions() {
     let totalCount = 0;
 
     // Limpa do banco (não implementado no service, apenas memória por segurança)
@@ -291,7 +300,7 @@ class MessageContext {
     // Limpa da memória
     totalCount = this.conversations.size;
     this.conversations.clear();
-    
+
     return totalCount;
   }
 

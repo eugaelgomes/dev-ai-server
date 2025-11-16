@@ -31,12 +31,12 @@ function validateSearchRequest(req, res, next) {
 
   // Normaliza subjects para array
   const subjectsArray = Array.isArray(subjects) ? subjects : [subjects];
-  
+
   // Valida cada subject
   const invalidSubjects = subjectsArray.filter(
-    s => !VALID_SUBJECTS.includes(s.toLowerCase())
+    (s) => !VALID_SUBJECTS.includes(s.toLowerCase())
   );
-  
+
   if (invalidSubjects.length > 0) {
     return res.status(400).json({
       error: `Invalid subject(s): ${invalidSubjects.join(", ")}. Must be one or more of: ${VALID_SUBJECTS.join(", ")}`,
@@ -44,7 +44,9 @@ function validateSearchRequest(req, res, next) {
   }
 
   // Remove duplicatas e normaliza para lowercase
-  req.validatedSubjects = [...new Set(subjectsArray.map(s => s.toLowerCase()))];
+  req.validatedSubjects = [
+    ...new Set(subjectsArray.map((s) => s.toLowerCase())),
+  ];
 
   // Validação do provider (obrigatório)
   if (!provider || !VALID_PROVIDERS.includes(provider.toLowerCase())) {
@@ -64,15 +66,17 @@ function validateSearchRequest(req, res, next) {
 
   // Aplica guard rails para todos os subjects selecionados
   // A mensagem é válida se passar em pelo menos um dos subjects
-  const guardRailResults = req.validatedSubjects.map(subject => ({
+  const guardRailResults = req.validatedSubjects.map((subject) => ({
     subject,
-    result: applyGuardRails(message, subject)
+    result: applyGuardRails(message, subject),
   }));
-  
-  const anyValid = guardRailResults.some(gr => gr.result.isValid);
-  
+
+  const anyValid = guardRailResults.some((gr) => gr.result.isValid);
+
   if (!anyValid) {
-    const reasons = guardRailResults.map(gr => `${gr.subject}: ${gr.result.reason}`).join("; ");
+    const reasons = guardRailResults
+      .map((gr) => `${gr.subject}: ${gr.result.reason}`)
+      .join("; ");
     return res.status(400).json({
       error: "Message validation failed for all selected subjects",
       reasons,

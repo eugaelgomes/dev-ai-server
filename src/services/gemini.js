@@ -8,7 +8,7 @@ const { getCombinedContext } = require("../services/constants");
 function getSystemMessage(subjects) {
   const subjectsArray = Array.isArray(subjects) ? subjects : [subjects];
   const combinedContext = getCombinedContext(subjectsArray);
-  
+
   return {
     role: "system",
     content: `Você é um assistente especializado EXCLUSIVAMENTE em ${combinedContext}.

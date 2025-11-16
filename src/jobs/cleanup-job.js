@@ -78,7 +78,7 @@ async function runCleanupJob() {
 
   if (result.success) {
     console.log(
-      `[Cleanup Job] Limpeza concluída - ` +
+      "[Cleanup Job] Limpeza concluída - " +
         `${result.deletedSessions} sessões e ${result.deletedMessages} mensagens removidas`
     );
   } else {

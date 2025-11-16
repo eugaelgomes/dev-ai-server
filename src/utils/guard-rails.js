@@ -12,13 +12,15 @@ const DIGIT_TO_LETTER = {
 };
 
 function normalizeText(text) {
-  if (!text) return "";
+  if (!text) {
+    return "";
+  }
 
   return text
     .toLowerCase()
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
-    .replace(/[0-9]/g, digit => DIGIT_TO_LETTER[digit] || digit)
+    .replace(/[0-9]/g, (digit) => DIGIT_TO_LETTER[digit] || digit)
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -541,7 +543,7 @@ function expandKeywordDictionary(dictionary) {
   return Object.entries(dictionary).reduce((acc, [subject, keywords]) => {
     const expanded = new Set();
 
-    keywords.forEach(keyword => {
+    keywords.forEach((keyword) => {
       const normalized = normalizeText(keyword);
       if (!normalized) {
         return;
@@ -560,7 +562,10 @@ function expandKeywordDictionary(dictionary) {
         expanded.add(normalized.replace(/s$/, ""));
       }
 
-      const stem = normalized.replace(/(coes|cao|caoes|ing|ed|mente|mente?s|s|es)$/g, "");
+      const stem = normalized.replace(
+        /(coes|cao|caoes|ing|ed|mente|mente?s|s|es)$/g,
+        ""
+      );
       if (stem.length >= 4) {
         expanded.add(stem);
       }
@@ -590,7 +595,7 @@ const OFF_TOPIC_KEYWORDS = [
   "dish",
   "refeicao",
   "meal",
-  
+
   // Esportes e entretenimento (PT + EN)
   "futebol",
   "football",
@@ -609,7 +614,7 @@ const OFF_TOPIC_KEYWORDS = [
   "match",
   "jogador",
   "player",
-  
+
   // Política (PT + EN)
   "politica",
   "politics",
@@ -625,7 +630,7 @@ const OFF_TOPIC_KEYWORDS = [
   "senador",
   "voto",
   "vote",
-  
+
   // Saúde e medicina (PT + EN)
   "saude",
   "health",
@@ -644,7 +649,7 @@ const OFF_TOPIC_KEYWORDS = [
   "hospital",
   "clinica",
   "clinic",
-  
+
   // Clima e meteorologia (PT + EN)
   "clima",
   "climate",
@@ -660,7 +665,7 @@ const OFF_TOPIC_KEYWORDS = [
   "sun",
   "nuvem",
   "cloud",
-  
+
   // Moda e estilo (PT + EN)
   "moda",
   "fashion",
@@ -674,7 +679,7 @@ const OFF_TOPIC_KEYWORDS = [
   "dress",
   "sapato",
   "shoe",
-  
+
   // Viagem e turismo (PT + EN)
   "viagem",
   "travel",
@@ -688,7 +693,7 @@ const OFF_TOPIC_KEYWORDS = [
   "destination",
   "voo",
   "flight",
-  
+
   // RH e carreira (não técnica) (PT + EN)
   "entrevista",
   "interview",
@@ -709,7 +714,7 @@ const OFF_TOPIC_KEYWORDS = [
   "ferias",
   "vacation",
   "holidays",
-  
+
   // Finanças pessoais (PT + EN)
   "investimento",
   "investment",
@@ -724,7 +729,7 @@ const OFF_TOPIC_KEYWORDS = [
   "loan",
   "credito",
   "credit",
-  
+
   // Relacionamentos e vida pessoal (PT + EN)
   "namoro",
   "dating",
@@ -739,7 +744,7 @@ const OFF_TOPIC_KEYWORDS = [
   "friend",
   "amor",
   "love",
-  
+
   // Educação geral (não técnica) (PT + EN)
   "matematica",
   "mathematics",
@@ -753,7 +758,7 @@ const OFF_TOPIC_KEYWORDS = [
   "redacao",
   "essay",
   "writing",
-  
+
   // Entretenimento (PT + EN)
   "filme",
   "movie",
@@ -767,7 +772,7 @@ const OFF_TOPIC_KEYWORDS = [
   "book",
   "novela",
   "soap opera",
-  
+
   // Outros (PT + EN)
   "religiao",
   "religion",
@@ -780,12 +785,13 @@ const OFF_TOPIC_KEYWORDS = [
 ];
 
 // Normaliza palavras fora de tópico uma vez para matching consistente
-const NORMALIZED_OFF_TOPIC_KEYWORDS = OFF_TOPIC_KEYWORDS
-  .map(normalizeText)
-  .filter(Boolean);
+const NORMALIZED_OFF_TOPIC_KEYWORDS =
+  OFF_TOPIC_KEYWORDS.map(normalizeText).filter(Boolean);
 
 function wordBoundaryIncludes(message, keyword) {
-  if (!keyword) return false;
+  if (!keyword) {
+    return false;
+  }
   // mensagem já normalizada; keywords também normalizadas
   const pattern = new RegExp(`\\b${keyword}\\b`);
   return pattern.test(message);
@@ -892,15 +898,21 @@ function validateSuspiciousPatterns(message) {
 function applyGuardRails(message, subject) {
   // Valida tamanho
   const lengthCheck = validateMessageLength(message);
-  if (!lengthCheck.isValid) return lengthCheck;
+  if (!lengthCheck.isValid) {
+    return lengthCheck;
+  }
 
   // Valida padrões suspeitos
   const suspiciousCheck = validateSuspiciousPatterns(message);
-  if (!suspiciousCheck.isValid) return suspiciousCheck;
+  if (!suspiciousCheck.isValid) {
+    return suspiciousCheck;
+  }
 
   // Valida relevância do tópico
   const topicCheck = validateTopicRelevance(message, subject);
-  if (!topicCheck.isValid) return topicCheck;
+  if (!topicCheck.isValid) {
+    return topicCheck;
+  }
 
   return { isValid: true, reason: null };
 }

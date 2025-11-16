@@ -47,13 +47,13 @@ function getCombinedContext(subjects) {
   if (subjects.length === 1) {
     return SUBJECT_CONTEXT[subjects[0]];
   }
-  
-  const contexts = subjects.map(s => SUBJECT_CONTEXT[s]);
-  
+
+  const contexts = subjects.map((s) => SUBJECT_CONTEXT[s]);
+
   if (subjects.length === 2) {
     return `${contexts[0]} e ${contexts[1]}`;
   }
-  
+
   const lastContext = contexts.pop();
   return `${contexts.join(", ")} e ${lastContext}`;
 }

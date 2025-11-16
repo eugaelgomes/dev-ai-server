@@ -88,13 +88,13 @@ Body (JSON):
 
 Parâmetros:
 
-| Campo         | Tipo   | Obrigatório | Descrição                                                       |
-| ------------- | ------ | ------------ | ----------------------------------------------------------------- |
-| `message`   | string | Sim          | Mensagem/pergunta do usuário                                     |
-| `subject`   | string | Sim          | Assunto:`codigo`, `programacao` , `dados` ou todos juntos. |
-| `provider`  | string | Não         | Provedor:`perplexity` ou `gemini`.                            |
-| `model`     | string | Não         | Modelo do provedor                                                |
-| `sessionId` | string | Não         | ID de sessão para manter contexto (não precisa no 1° req)      |
+| Campo       | Tipo   | Obrigatório | Descrição                                                  |
+| ----------- | ------ | ----------- | ---------------------------------------------------------- |
+| `message`   | string | Sim         | Mensagem/pergunta do usuário                               |
+| `subject`   | string | Sim         | Assunto:`codigo`, `programacao` , `dados` ou todos juntos. |
+| `provider`  | string | Não         | Provedor:`perplexity` ou `gemini`.                         |
+| `model`     | string | Não         | Modelo do provedor                                         |
+| `sessionId` | string | Não         | ID de sessão para manter contexto (não precisa no 1° req)  |
 
 Modelos suportados:
 
@@ -176,7 +176,7 @@ curl -X POST http://localhost:8080/content/search \
 
 ## Links
 
-- Repositório: [https://github.com/eugaelgomes/dev-ai-server]([https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server)
+- Repositório: [https://github.com/eugaelgomes/dev-ai-server](<[https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server>)
 - Issues: [https://github.com/eugaelgomes/dev-ai-server/issues](https://github.com/eugaelgomes/dev-ai-server/issues)
 - Documentação/Testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
 - API pública: [https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)

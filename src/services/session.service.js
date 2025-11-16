@@ -18,7 +18,7 @@ class SessionService {
       DO UPDATE SET last_activity = NOW()
       RETURNING *;
     `;
-    
+
     const rows = await executeQuery(sql, [sessionId, subject]);
     return rows[0];
   }
@@ -35,17 +35,17 @@ class SessionService {
       FROM aiSessions
       WHERE session_id = $1;
     `;
-    
+
     const rows = await executeQuery(sql, [sessionId]);
     return rows[0] || null;
   }
 
   /**
-   * Lista todas as sessões ativas
+   * Lista sessões ordenadas por atividade
    * @param {number} limit - Limite de resultados
    * @returns {Promise<Array>} Lista de sessões
    */
-  async listSessions(limit = 100) {
+  listSessions(limit = 100) {
     const sql = `
       SELECT s.session_id, s.subject, s.created_at, s.last_activity,
              COUNT(m.id) as message_count
@@ -55,8 +55,8 @@ class SessionService {
       ORDER BY s.last_activity DESC
       LIMIT $1;
     `;
-    
-    return await executeQuery(sql, [limit]);
+
+    return executeQuery(sql, [limit]);
   }
 
   /**
@@ -65,7 +65,7 @@ class SessionService {
    * @returns {Promise<boolean>} true se deletou, false se não encontrou
    */
   async deleteSession(sessionId) {
-    const sql = `DELETE FROM aiSessions WHERE session_id = $1;`;
+    const sql = "DELETE FROM aiSessions WHERE session_id = $1;";
     const count = await rowCount(sql, [sessionId]);
     return count > 0;
   }
@@ -81,7 +81,7 @@ class SessionService {
       WHERE last_activity < NOW() - INTERVAL '${timeoutMinutes} minutes'
       RETURNING session_id;
     `;
-    
+
     const rows = await executeQuery(sql);
     return rows.length;
   }
@@ -91,7 +91,7 @@ class SessionService {
    * @returns {Promise<number>} Número de sessões ativas
    */
   async getActiveSessionCount() {
-    const sql = `SELECT COUNT(*) as count FROM aiSessions;`;
+    const sql = "SELECT COUNT(*) as count FROM aiSessions;";
     const rows = await executeQuery(sql);
     return parseInt(rows[0].count, 10);
   }

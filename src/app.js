@@ -1,21 +1,18 @@
 const express = require("express");
 const routes = require("./routes");
 const { generalLimiter } = require("./middlewares/rate-limit");
-const { errorHandler, notFoundHandler } = require("./middlewares/error-handler");
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middlewares/error-handler");
 
 const app = express();
 
 // Middlewares principais
-const baseMiddlewares = [
-  express.json(),
-  generalLimiter
-];
+const baseMiddlewares = [express.json(), generalLimiter];
 
 // Middlewares finais
-const finalMiddlewares = [
-  notFoundHandler,
-  errorHandler
-];
+const finalMiddlewares = [notFoundHandler, errorHandler];
 
 app.use(baseMiddlewares);
 app.use("/content", routes);

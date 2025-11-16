@@ -18,14 +18,14 @@ class MessageService {
       VALUES ($1, $2, $3, $4, NOW())
       RETURNING *;
     `;
-    
+
     const rows = await executeQuery(sql, [
       sessionId,
       role,
       content,
       JSON.stringify(metadata),
     ]);
-    
+
     return rows[0];
   }
 
@@ -43,7 +43,7 @@ class MessageService {
       ORDER BY created_at DESC
       LIMIT $2;
     `;
-    
+
     const rows = await executeQuery(sql, [sessionId, limit]);
     return rows.reverse(); // Retorna na ordem cronológica
   }
@@ -57,10 +57,10 @@ class MessageService {
    */
   async getMessagesForAPI(sessionId, limit = 20, includeSystem = true) {
     const messages = await this.getMessages(sessionId, limit);
-    
+
     return messages
-      .filter(m => includeSystem || m.role !== 'system')
-      .map(m => ({
+      .filter((m) => includeSystem || m.role !== "system")
+      .map((m) => ({
         role: m.role,
         content: m.content,
       }));
@@ -72,7 +72,8 @@ class MessageService {
    * @returns {Promise<number>} Número de mensagens
    */
   async countMessages(sessionId) {
-    const sql = `SELECT COUNT(*) as count FROM aiServerMessages WHERE session_id = $1;`;
+    const sql =
+      "SELECT COUNT(*) as count FROM aiServerMessages WHERE session_id = $1;";
     const rows = await executeQuery(sql, [sessionId]);
     return parseInt(rows[0].count, 10);
   }
@@ -95,7 +96,7 @@ class MessageService {
         )
       RETURNING id;
     `;
-    
+
     const rows = await executeQuery(sql, [sessionId, keepCount]);
     return rows.length;
   }

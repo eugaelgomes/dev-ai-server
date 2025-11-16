@@ -28,8 +28,6 @@ const executeQuery = async (sql, params = []) => {
   try {
     const { rows } = await client.query(sql, params);
     return rows;
-  } catch (error) {
-    throw error;
   } finally {
     client.release();
   }
@@ -40,8 +38,6 @@ const rowCount = async (sql, params = []) => {
   try {
     const result = await client.query(sql, params);
     return result.rowCount;
-  } catch (error) {
-    throw error;
   } finally {
     client.release();
   }
