@@ -1,7 +1,6 @@
 /**
  * Modelos, provedores e assuntos válidos para requests
  */
-
 const VALID_PROVIDERS = ["perplexity", "gemini"];
 const VALID_SUBJECTS = ["codigo", "programacao", "dados", "devops"];
 
@@ -13,12 +12,7 @@ const VALID_MODELS = {
     "sonar-reasoning-pro",
     "sonar-deep-research",
   ],
-  gemini: [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash-exp",
-    "gemini-1.5-flash",
-    "gemini-1.5-pro",
-  ],
+  gemini: ["gemini-2.5-flash"],
 };
 
 const DEFAULT_MODELS = {
@@ -27,10 +21,14 @@ const DEFAULT_MODELS = {
 };
 
 const SUBJECT_CONTEXT = {
-  codigo: "código e desenvolvimento de software",
-  programacao: "programação e linguagens de programação",
-  dados: "ciência de dados, análise e engenharia de dados",
-  devops: "DevOps, infraestrutura, CI/CD, cloud e observabilidade",
+  codigo:
+    "Desenvolvimento de software envolvendo escrita, leitura e manutenção de código, incluindo versionamento, boas práticas, debugging e arquitetura.",
+  programacao:
+    "Princípios, paradigmas e técnicas de programação em diversas linguagens, abordando lógica, estruturas de dados, padrões e resolução de problemas.",
+  dados:
+    "Processos e técnicas de ciência de dados, engenharia de dados e análise, incluindo ETL, modelagem, bancos de dados, estatística e visualização.",
+  devops:
+    "Práticas de DevOps relacionadas a infraestrutura, CI/CD, automação, containers, cloud computing, monitoramento e observabilidade.",
 };
 
 const SESSION_CONFIG = {

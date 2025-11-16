@@ -15,21 +15,6 @@ class MessageContext {
     this.maxMessagesPerSession = options.maxMessagesPerSession || 20;
     this.sessionTimeout = options.sessionTimeout || 30 * 60 * 1000; // 30 minutos padrão
     this.useDatabase = options.useDatabase !== false; // Ativa DB por padrão
-
-    // Limpa sessões expiradas periodicamente
-    this.startCleanupInterval();
-  }
-
-  /**
-   * Inicia limpeza periódica de sessões expiradas
-   */
-  startCleanupInterval() {
-    setInterval(
-      () => {
-        this.cleanExpiredSessions();
-      },
-      5 * 60 * 1000
-    ); // Verifica a cada 5 minutos
   }
 
   /**
