@@ -3,7 +3,7 @@
  */
 
 const VALID_PROVIDERS = ["perplexity", "gemini"];
-const VALID_SUBJECTS = ["codigo", "programacao", "dados"];
+const VALID_SUBJECTS = ["codigo", "programacao", "dados", "devops"];
 
 const VALID_MODELS = {
   perplexity: [
@@ -30,6 +30,7 @@ const SUBJECT_CONTEXT = {
   codigo: "código e desenvolvimento de software",
   programacao: "programação e linguagens de programação",
   dados: "ciência de dados, análise e engenharia de dados",
+  devops: "DevOps, infraestrutura, CI/CD, cloud e observabilidade",
 };
 
 const SESSION_CONFIG = {

@@ -104,6 +104,50 @@ const BASE_SUBJECT_KEYWORDS = {
     "testing",
     "infrastructure",
     "deployment",
+    // Extras
+    "backend",
+    "frontend",
+    "monorepo",
+    "monolito",
+    "ddd",
+    "clean architecture",
+    "hexagonal",
+    "ports and adapters",
+    "serverless",
+    "api gateway",
+    // Segurança aplicada a código/arquitetura
+    "seguranca",
+    "security",
+    "owasp",
+    "oauth",
+    "jwt",
+    "xss",
+    "csrf",
+    "sql injection",
+    "sqli",
+    "csp",
+    "tls",
+    "encryption",
+    "hashing",
+    "rate limiting",
+    "waf",
+    "secrets",
+    "vault",
+    // UI/UX e design de produto técnico
+    "ui",
+    "ux",
+    "user interface",
+    "user experience",
+    "design system",
+    "component library",
+    "storybook",
+    "acessibilidade",
+    "accessibility",
+    "wcag",
+    "usabilidade",
+    "figma",
+    "wireframe",
+    "prototipo",
   ],
   programacao: [
     // Português
@@ -244,6 +288,37 @@ const BASE_SUBJECT_KEYWORDS = {
     "packages",
     "modules",
     "dependencies",
+    // Linguagens adicionais
+    "go",
+    "golang",
+    "rust",
+    "c",
+    "cpp",
+    "csharp",
+    "dotnet",
+    "php",
+    "ruby",
+    "elixir",
+    "kotlin",
+    "swift",
+    "scala",
+    "r",
+    // Testes
+    "tests",
+    "testes",
+    "unit tests",
+    "integration tests",
+    "e2e",
+    "jest",
+    "mocha",
+    "vitest",
+    "cypress",
+    "playwright",
+    "testcontainers",
+    "mock",
+    "stub",
+    "assert",
+    "coverage",
   ],
   dados: [
     // Português
@@ -367,6 +442,98 @@ const BASE_SUBJECT_KEYWORDS = {
     "joins",
     "aggregates",
     "partitions",
+    // Ferramentas e plataformas de dados
+    "looker",
+    "looker studio",
+    "metabase",
+    "superset",
+    "dbt",
+    "airflow",
+    "dagster",
+    "great expectations",
+    "synapse",
+    "glue",
+    "emr",
+  ],
+  devops: [
+    // Português
+    "devops",
+    "infra",
+    "infraestrutura",
+    "observabilidade",
+    "monitoramento",
+    "alerta",
+    "confiabilidade",
+    "sre",
+    "deploy",
+    "pipeline",
+    "entrega continua",
+    "integracao continua",
+    "orquestracao",
+    // Ferramentas/Conceitos
+    "ci",
+    "cd",
+    "cicd",
+    "ci/cd",
+    "terraform",
+    "iac",
+    "ansible",
+    "pulumi",
+    "kubernetes",
+    "helm",
+    "argo",
+    "argo cd",
+    "flux",
+    "docker",
+    "container",
+    "containers",
+    "prometheus",
+    "grafana",
+    "loki",
+    "tempo",
+    "jaeger",
+    "otel",
+    "open telemetry",
+    "feature flag",
+    // Cloud
+    "cloud",
+    "aws",
+    "azure",
+    "gcp",
+    "serverless",
+    "lambda",
+    "cloud run",
+    "functions",
+    // Segurança, suporte e operações
+    "seguranca",
+    "security",
+    "iam",
+    "kms",
+    "vault",
+    "waf",
+    "ddos",
+    "sast",
+    "dast",
+    "sonarqube",
+    "snyk",
+    "dependabot",
+    "guardduty",
+    "cloudtrail",
+    "inspector",
+    "policy",
+    // Suporte/operacao
+    "suporte",
+    "support",
+    "incidente",
+    "incident",
+    "oncall",
+    "on-call",
+    "postmortem",
+    "runbook",
+    "playbook",
+    "sla",
+    "slo",
+    "sli",
   ],
 };
 
@@ -612,6 +779,18 @@ const OFF_TOPIC_KEYWORDS = [
   "astrology",
 ];
 
+// Normaliza palavras fora de tópico uma vez para matching consistente
+const NORMALIZED_OFF_TOPIC_KEYWORDS = OFF_TOPIC_KEYWORDS
+  .map(normalizeText)
+  .filter(Boolean);
+
+function wordBoundaryIncludes(message, keyword) {
+  if (!keyword) return false;
+  // mensagem já normalizada; keywords também normalizadas
+  const pattern = new RegExp(`\\b${keyword}\\b`);
+  return pattern.test(message);
+}
+
 /**
  * Valida se a mensagem está dentro do escopo do assunto escolhido
  * @param {string} message - Mensagem do usuário
@@ -619,11 +798,12 @@ const OFF_TOPIC_KEYWORDS = [
  * @returns {Object} - { isValid: boolean, reason: string }
  */
 function validateTopicRelevance(message, subject) {
-  const lowerMessage = message.toLowerCase();
+  // Normaliza a mensagem para alinhar com o dicionário expandido
+  const normalizedMessage = normalizeText(message);
 
-  // Verifica se contém palavras claramente fora do tópico
-  const hasOffTopicWords = OFF_TOPIC_KEYWORDS.some((keyword) =>
-    lowerMessage.includes(keyword)
+  // Verifica se contém palavras claramente fora do tópico (normalizadas)
+  const hasOffTopicWords = NORMALIZED_OFF_TOPIC_KEYWORDS.some((keyword) =>
+    wordBoundaryIncludes(normalizedMessage, keyword)
   );
 
   if (hasOffTopicWords) {
@@ -633,19 +813,14 @@ function validateTopicRelevance(message, subject) {
     };
   }
 
-  // Verifica se contém pelo menos uma palavra-chave do assunto
+  // Verifica se contém pelo menos uma palavra-chave do assunto (normalizada)
   const subjectKeywords = SUBJECT_KEYWORDS[subject] || [];
   const hasRelevantKeywords = subjectKeywords.some((keyword) =>
-    lowerMessage.includes(keyword)
+    wordBoundaryIncludes(normalizedMessage, keyword)
   );
 
-  // REGRA MAIS RIGOROSA: Se a mensagem tem mais de 15 caracteres e NÃO tem keywords relevantes, rejeita
-  if (message.trim().length >= 15 && !hasRelevantKeywords) {
-    return {
-      isValid: false,
-      reason: `Sua pergunta deve estar relacionada a ${subject}. Inclua termos técnicos relevantes na sua pergunta.`,
-    };
-  }
+  // Regra suavizada: não bloquear mensagens medianas/longas sem keywords
+  // Mantemos apenas uma exigência mínima para mensagens muito curtas
 
   // Se a mensagem for muito curta (< 10 chars) e não tem keywords, pode ser suspeita
   if (message.trim().length < 10 && !hasRelevantKeywords) {
