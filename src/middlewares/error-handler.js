@@ -15,9 +15,9 @@ function errorHandler(err, req, res, next) {
   // Resposta de erro
   res.status(statusCode).json({
     error: err.message || "Internal server error",
-    ...(process.env.NODE_ENV === "development" && { 
+    ...(process.env.NODE_ENV === "development" && {
       stack: err.stack,
-      details: err.details 
+      details: err.details,
     }),
   });
 }
@@ -27,7 +27,7 @@ function errorHandler(err, req, res, next) {
  */
 function notFoundHandler(req, res) {
   // Se aceita HTML, retorna página HTML
-  if (req.accepts('html')) {
+  if (req.accepts("html")) {
     return res.status(404).send(`
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -104,7 +104,7 @@ function notFoundHandler(req, res) {
 </html>
     `);
   }
-  
+
   // Caso contrário, retorna JSON
   res.status(404).json({
     error: "Route not found",

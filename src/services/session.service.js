@@ -1,4 +1,4 @@
-const { executeQuery, rowCount } = require("../config/db");
+const { executeQuery, rowCount } = require("./db");
 
 /**
  * Serviço de gerenciamento de sessões no banco de dados

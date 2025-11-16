@@ -1,4 +1,4 @@
-const { executeQuery } = require("../config/db");
+const { executeQuery } = require("./db");
 
 /**
  * Serviço de gerenciamento de mensagens no banco de dados

@@ -2,9 +2,8 @@
  * Modelos, provedores e assuntos válidos para requests
  */
 
-const VALID_SUBJECTS = ["codigo", "programacao", "dados"];
-
 const VALID_PROVIDERS = ["perplexity", "gemini"];
+const VALID_SUBJECTS = ["codigo", "programacao", "dados"];
 
 const VALID_MODELS = {
   perplexity: [

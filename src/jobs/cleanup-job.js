@@ -1,6 +1,6 @@
 const cron = require("node-cron");
 const sessionService = require("../services/session.service");
-const { executeQuery } = require("../config/db");
+const { executeQuery } = require("../services/db");
 
 /**
  * Configurações do job de limpeza

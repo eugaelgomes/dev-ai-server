@@ -1,4 +1,4 @@
-const { getCombinedContext } = require("./constants");
+const { getCombinedContext } = require("../services/constants");
 
 /**
  * Gera a mensagem do sistema para o Gemini
