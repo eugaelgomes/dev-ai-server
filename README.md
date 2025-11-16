@@ -1,5 +1,7 @@
 # Dev AI Server - DevAI
 
+![1763326937757](image/README/1763326937757.png)
+
 **API Gateway** de **IA** para consultas com **Perplexity AI** e **Google Gemini**, construído com **Node.js** e **Express.js**. A **API** tem foco em **guard rails** (validação de conteúdo) para garantir mantenimento nos temas sobre **tecnologia**, **desenvolvimento de software**, **programação** e **ciência de dados**. Implementa **sessões com contexto** e utiliza **PostgreSQL** para persistência.
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Nodemon](https://img.shields.io/badge/NODEMON-%23323330.svg?style=for-the-badge&logo=nodemon&logoColor=%BBDEAD) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white) ![Perplexity](https://img.shields.io/badge/perplexity-000000?style=for-the-badge&logo=perplexity&logoColor=088F8F) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
