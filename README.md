@@ -1,16 +1,21 @@
-# AI Server
+# Dev AI Server
 
-Servidor de API para consultas de IA com suporte para múltiplos provedores (Perplexity e Gemini) e especialização por assunto.
+Gateway de IA para consultas com múltiplos provedores (Perplexity e Gemini), suporte multilíngue e gerenciamento de sessões para manter contexto.
 
-## 🚀 Funcionalidades
+## 🔗 Links Rápidos
 
-- **Múltiplos Provedores**: Escolha entre Perplexity AI e Google Gemini
-- **Especialização por Assunto**: Código, Programação ou Dados
-- **Guard Rails**: Validação inteligente de mensagens em PT/EN
-- **Gerenciamento de Sessões**: Mantenha o contexto da conversa
-- **Multilíngue**: Suporte para Português e Inglês
+- Documentação e testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
+- Endpoint público (POST):[ https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)
 
-## 📋 Pré-requisitos
+## 🚀 Principais Recursos
+
+- Múltiplos provedores: Perplexity AI e Google Gemini
+- Especialização por assunto: código, programação e dados
+- Guard rails bilíngues (PT/EN) para segurança e relevância
+- Sessões com contexto de conversa
+- Suporte a Português e Inglês
+
+## 📋 Pré‑requisitos
 
 - Node.js 18+
 - PostgreSQL
@@ -35,127 +40,120 @@ cp .env.example .env
 
 ## ⚙️ Configuração
 
-Edite o arquivo `.env`:
+Edite o arquivo `.env` com suas credenciais e porta desejada:
 
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/ai_server
+DATABASE_NAME=
+DATABASE_HOST_URL=
+DATABASE_SERVICE_PORT=
+DATABASE_USERNAME=
+DATABASE_PASSWORD=
+
 PERPLEXITY_API_KEY=sua_chave_perplexity
 GEMINI_API_KEY=sua_chave_gemini
-PORT=3000
+
+PORT=8080
 NODE_ENV=development
 ```
 
-## 🏃 Executando
+## 🏃 Execução
 
 ```bash
-# Desenvolvimento
+# Desenvolvimento (hot reload)
 npm run dev
 
 # Produção
 npm start
 ```
 
-## 📡 API Endpoints
+## 📡 API
 
-### POST /search
+- Local: `POST http://localhost:8080/search`
+- Produção: `POST https://dev-ai.codaweb.com.br/content/search`
 
-Realiza uma consulta de IA.
+### Requisição
 
-**Body:**
+Body (JSON):
+
 ```json
 {
   "message": "Como fazer um loop em JavaScript?",
   "subject": "programacao",
   "provider": "gemini",
   "model": "gemini-2.0-flash-exp",
-  "sessionId": "session_123" // opcional
+  "sessionId": "session_123"
 }
 ```
 
-**Parâmetros:**
+Parâmetros:
 
-| Campo | Tipo | Obrigatório | Descrição |
-|-------|------|-------------|-----------|
-| `message` | string | Sim | Mensagem/pergunta do usuário |
-| `subject` | string | Sim | Assunto: `codigo`, `programacao`, ou `dados` |
-| `provider` | string | Não | Provedor: `perplexity` ou `gemini` (padrão: `perplexity`) |
-| `model` | string | Não | Modelo específico do provedor |
-| `sessionId` | string | Não | ID da sessão para manter contexto |
+| Campo         | Tipo   | Obrigatório | Descrição                                                     |
+| ------------- | ------ | ------------ | --------------------------------------------------------------- |
+| `message`   | string | Sim          | Mensagem/pergunta do usuário                                   |
+| `subject`   | string | Sim          | Assunto:`codigo`, `programacao` ou `dados`                |
+| `provider`  | string | Não         | Provedor:`perplexity` ou `gemini` (padrão: `perplexity`) |
+| `model`     | string | Não         | Modelo do provedor                                              |
+| `sessionId` | string | Não         | ID de sessão para manter contexto                              |
 
-**Modelos Disponíveis:**
+Modelos suportados:
 
-**Perplexity:**
+Perplexity
+
 - `sonar` (padrão)
 - `sonar-pro`
 - `sonar-reasoning`
 - `sonar-reasoning-pro`
 - `sonar-deep-research`
 
-**Gemini:**
-- `gemini-2.0-flash-exp` (padrão)
-- `gemini-1.5-flash`
-- `gemini-1.5-pro`
+Gemini
 
-**Resposta:**
+- `gemini-2.0-flash` - (somente esse funciona)
+
+Exemplo de resposta:
+
 ```json
 {
   "sessionId": "session_123",
   "subject": "programacao",
   "provider": "gemini",
   "message": "Como fazer um loop em JavaScript?",
-  "model": "gemini-2.0-flash-exp",
+  "model": "gemini-2.0-flash",
   "content": "Para fazer um loop em JavaScript...",
   "citations": [],
   "messageCount": 2
 }
 ```
 
-### GET /session/:sessionId
+### Sessões e Saúde
 
-Obtém informações sobre uma sessão específica.
-
-### GET /sessions
-
-Lista todas as sessões ativas.
-
-### DELETE /session/:sessionId
-
-Deleta uma sessão específica.
-
-### DELETE /sessions
-
-Limpa todas as sessões.
-
-### GET /health
-
-Verifica o status do servidor.
+- `GET /session/:sessionId` — detalhes da sessão
+- `GET /sessions` — lista sessões ativas
+- `DELETE /session/:sessionId` — remove uma sessão
+- `DELETE /sessions` — limpa todas as sessões
+- `GET /health` — status do servidor
 
 ## 🛡️ Guard Rails
 
-O sistema possui validações inteligentes bilíngues (PT/EN) que:
+Validações inteligentes bilíngues (PT/EN):
 
-- ✅ Validam relevância do tópico
-- ✅ Detectam palavras fora do escopo
-- ✅ Limitam tamanho de mensagens
-- ✅ Protegem contra padrões suspeitos
-- ✅ Suportam termos técnicos em português e inglês
+- Validação de relevância do tópico
+- Detecção de termos fora do escopo
+- Limite de tamanho de mensagens
+- Proteção contra padrões suspeitos
+- Suporte a termos técnicos em PT/EN
 
-## 🔄 Assuntos Disponíveis
+## 🔄 Assuntos
 
-### `codigo`
-Desenvolvimento de software, Git, CI/CD, Docker, arquitetura, testes.
+- `codigo`: desenvolvimento de software, Git, CI/CD, Docker, arquitetura, testes
+- `programacao`: linguagens, algoritmos, estruturas de dados, frameworks
+- `dados`: ciência de dados, análise, ML, bancos de dados, BI
 
-### `programacao`
-Linguagens de programação, algoritmos, estruturas de dados, frameworks.
+## 📝 Exemplos
 
-### `dados`
-Ciência de dados, análise, machine learning, bancos de dados, BI.
+Produção (Apidog recomendado para testar):
 
-## 📝 Exemplos de Uso
-
-### Usando Perplexity
 ```bash
-curl -X POST http://localhost:3000/search \
+curl -X POST https://dev-ai.codaweb.com.br/content/search \
   -H "Content-Type: application/json" \
   -d '{
     "message": "What is a REST API?",
@@ -165,9 +163,10 @@ curl -X POST http://localhost:3000/search \
   }'
 ```
 
-### Usando Gemini
+Local
+
 ```bash
-curl -X POST http://localhost:3000/search \
+curl -X POST http://localhost:8080/search \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Explique recursão em Python",
@@ -176,9 +175,9 @@ curl -X POST http://localhost:3000/search \
   }'
 ```
 
-## 🤝 Contribuindo
+## 🤝 Contribuição
 
-Contribuições são bem-vindas! Por favor, abra uma issue ou pull request.
+Contribuições são bem-vindas. Abra uma issue ou pull request.
 
 ## 📄 Licença
 
@@ -186,5 +185,7 @@ ISC © Gael Gomes
 
 ## 🔗 Links
 
-- [Repositório](https://github.com/eugaelgomes/ai-mcp)
-- [Issues](https://github.com/eugaelgomes/ai-mcp/issues)
+- Repositório: [https://github.com/eugaelgomes/ai-mcp](https://github.com/eugaelgomes/ai-mcp)
+- Issues: [https://github.com/eugaelgomes/ai-mcp/issues](https://github.com/eugaelgomes/ai-mcp/issues)
+- Documentação/Testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
+- API pública: [https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)
