@@ -8,21 +8,142 @@
 
 ## Links Rápidos
 
+Seja bonzinho e não consuma muitos tokens (8 requisições, no máximo) :)
+
 - API em produção (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
 - Endpoint público (POST):[ https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)
 
-Seja bonzinho e não consuma tantos tokens :).
 
-## Principais Recursos
+# 🛤️ Estrutura do GuardRails
 
-- Provedores: Perplexity AI e Google Gemini;
-- Especialização por assunto: código, programação e dados, ou todos;
-- Guard rails bilíngues (PT/EN) para segurança e relevância;
-- Sessões com contexto de conversa;
+O guard rails funciona como um filtro inteligente em três camadas, garantindo que apenas perguntas relevantes cheguem a LLM. O filtro é base código, onde há um dicionários de termos cognatos e/ou relacionados a tecologia (base_subjetcs). Além disso há os off_topics, no qual a função principal é barrar todo e qualquer conteúdo que fuja do escopo de desenvolvimento, análise de dados, infra, suporte tech e relacionados...
 
-## Pré‑requisitos
 
-- Node.js 18+
+**1. Normalização de Texto**
+
+- Remove acentos e caracteres especiais
+- Converte tudo para minúsculas
+- Substitui números por letras similares (ex: "c0d3" vira "code")
+- Expande keywords com variações (singular/plural, stems)
+
+Isso significa que não adianta escrever "pr0gr4m4ç@0" tentando enganar o sistema — ele ainda vai entender.
+
+**2. Validação de Tamanho**
+
+Limite de 2000 caracteres por mensagem. Isso evita abuso de tokens e mantém as conversas focadas - como é um protótipo e a intenção incial é economizar tokens essa verificação é válida.
+
+**3. Detecção de Padrões Suspeitos**
+
+Bloqueia tentativas de:
+- Repetição excessiva de caracteres
+- Prompt injection ("ignore previous instructions", "you are now...")
+- Comandos de sistema maliciosos
+
+**4. Validação de Relevância**
+
+Dicionários expandidos de palavras-chave para cada assunto:
+
+- **codigo/devops/cloud**: Git, Docker, CI/CD, testes, arquitetura, segurança aplicada, UI/UX técnico...
+- **programacao**: Linguagens, frameworks, algoritmos, estruturas de dados, paradigmas...
+- **dados**: Bancos de dados, ML/AI, analytics, ETL, visualização, feature engineering...
+
+**5. Bloqueio de Assuntos Off Topics**
+L
+ista de termos claramente fora de escopo (culinária, esportes, política, moda, relações humanas, natureza, etc.).
+
+### Pontos fortes
+
+- Normalização de texto, dicionários de termos e padrões de conteúdo permitido, proteção contra injeções, especialização por assunto ou multi assunto, off topics com termos e temas bloqueados.
+
+### Limitações
+
+Falsos positivos - perguntas genéricas/sem termos tech podem ser bloquadas, dependência de key words, manutenção manual de dicionário, sem sentido semântico da frase, rigizes de regras em off topics.
+
+
+# 💻 Estrutura do Projeto
+
+### Constants.js — Config padrão das LLMs
+
+O `constants.js` define:
+
+**Provedores e modelos válidos:**
+- Perplexity: sonar, sonar-pro, sonar-reasoning, sonar-reasoning-pro, sonar-deep-research
+- Gemini: gemini-2.5-flash
+
+**Assuntos especializados:**
+- `codigo`: Desenvolvimento de software, versionamento, debugging, arquitetura
+- `programacao`: Paradigmas, lógica, estruturas de dados, padrões
+- `dados`: ETL, modelagem, bancos de dados, estatística, visualização
+- `devops`: Infraestrutura, CI/CD, containers, cloud, monitoramento
+
+**Configurações de sessão:**
+- Máximo de 20 mensagens por sessão
+- Timeout de 30 minutos
+
+Função `getCombinedContext()` que permite combinar múltiplos assuntos no mesmo array de assuntos `["codigo", "programacao",...]`.
+
+## System Agents — A personalidade da IA
+
+Provedores `gemini.js` e `perplexity.js` exportam uma função `getSystemMessage()` que definem **como** a IA deve se comportar - ou passa, ou bloqueia.
+
+**Regras de escopo rígidas:**
+- Responde APENAS sobre os assuntos escolhidos
+- Se fugir do tema, responde com uma mensagem padrão educada mas firme
+- Não aceita perguntas de outros assuntos, mesmo que técnicos
+
+**Estilo de resposta definido:**
+- **Objetivo**: Vai direto ao ponto, sem enrolação
+- **Assertivo**: Usa linguagem confiante, evita "talvez", "pode ser"
+- **Didático**: Explica do simples ao complexo
+- **Estruturado**: Resposta direta → explicação → exemplo → dicas
+
+**Formato markdown:**
+- Código em blocos
+- Listas e bullet points
+- Conciso mas completo
+
+Se o `guardrails` permitir algum tema bloqueado a LLM tem instrução para analisar e barrar.
+
+### Estrutura de diretórios
+
+```
+dev-ai-server/
+├── src/
+│   ├── app.js                      # Express config
+│   ├── index.js                    # Entry point
+│   ├── middlewares/
+│   │   ├── error-handler.js        # Erros globais
+│   │   ├── rate-limit.js           # Limitação de requisições
+│   │   └── validator.js            # Validação de requests
+│   ├── routes/
+│   │   ├── health.routes.js        # Endpoint de saúde
+│   │   ├── home.routes.js          # Rota inicial
+│   │   ├── index.js                # Agregador de rotas
+│   │   ├── search.routes.js        # Rota principal de busca
+│   │   └── session.routes.js       # Gerenciamento de sessões
+│   ├── services/
+│   │   ├── constants.js            # Configurações e constantes
+│   │   ├── db.js                   # Conexão PostgreSQL
+│   │   ├── gemini.js               # Agent Google Gemini
+│   │   ├── message.service.js      # Serviço de mensagens
+│   │   ├── perplexity.js           # Agent Perplexity AI
+│   │   └── session.service.js      # Serviço de sessões
+│   └── utils/
+│       ├── guard-rails.js          # Sistema de validação
+│       ├── message-context.js      # Contexto de conversas
+│       └── library/
+│           ├── base-subject.js     # Dicionário de termos tech
+│           └── off-topic.js        # Lista de bloqueio
+├── eslint.config.js
+├── package.json
+└── README.md
+```
+
+<br>
+
+# 🪛 Instruções de uso
+
+- Node.js 20+
 - PostgreSQL
 - Chaves de API:
   - Perplexity AI API Key
