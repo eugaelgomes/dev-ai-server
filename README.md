@@ -192,7 +192,7 @@ npm run dev
 npm start
 ```
 
-## API
+## 👾 API - Exemplos e rotas
 
 - Local: `POST http://localhost:8080/search`
 - Produção(my domain, in this case): `POST https://dev-ai.codaweb.com.br/content/search`
@@ -257,19 +257,6 @@ Exemplo de resposta:
 - `DELETE /session/:sessionId` — remove uma sessão
 - `DELETE /sessions` — limpa todas as sessões
 - `GET /health` — status do servidor
-
-## Guard Rails
-
-- Validação de relevância do tópico
-- Detecção de termos fora do escopo
-- Limite de tamanho de mensagens
-- Proteção contra padrões suspeitos
-
-## Assuntos
-
-- `codigo` & `devops`: desenvolvimento de software, Git, CI/CD, Docker, arquitetura, testes
-- `programacao`: linguagens, algoritmos, estruturas de dados, frameworks
-- `dados`: ciência de dados, análise, ML, bancos de dados, BI
 
 ## Exemplos
 
