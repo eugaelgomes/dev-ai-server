@@ -1,6 +1,7 @@
 /**
  * Modelos, provedores e assuntos válidos para requests
  */
+
 const VALID_PROVIDERS = ["perplexity", "gemini"];
 const VALID_SUBJECTS = ["codigo", "programacao", "dados", "devops"];
 
@@ -12,7 +13,7 @@ const VALID_MODELS = {
     "sonar-reasoning-pro",
     "sonar-deep-research",
   ],
-  gemini: ["gemini-2.5-flash"],
+  gemini: ["gemini-2.5-flash", "gemini-3-pro-preview"],
 };
 
 const DEFAULT_MODELS = {
@@ -37,7 +38,7 @@ const SESSION_CONFIG = {
 };
 
 /**
- * Combina múltiplos contextos de subjects em uma única descrição
+ * Combina múltiplos contextos de subjects em uma descrição
  * @param {Array<string>} subjects - Array de subjects
  * @returns {string} Descrição combinada
  */

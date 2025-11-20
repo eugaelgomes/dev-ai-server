@@ -3,7 +3,7 @@ const {
   VALID_PROVIDERS,
   VALID_MODELS,
   DEFAULT_MODELS,
-} = require("../services/constants");
+} = require("../services/models/constants");
 const { applyGuardRails } = require("../utils/guard-rails");
 
 /**

@@ -1,5 +1,5 @@
-const sessionService = require("../services/session.service");
-const messageService = require("../services/message.service");
+const sessionService = require("../services/db/session.service");
+const messageService = require("../services/db/message.service");
 
 /**
  * Gerenciador de contexto e histórico de mensagens

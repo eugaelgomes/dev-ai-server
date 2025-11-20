@@ -5,11 +5,11 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { getMessageContext } = require("../utils/message-context");
 const {
   getSystemMessage: getPerplexitySystemMessage,
-} = require("../services/perplexity");
+} = require("../services/models/perplexity");
 const {
   getSystemMessage: getGeminiSystemMessage,
-} = require("../services/gemini");
-const { SESSION_CONFIG } = require("../services/constants");
+} = require("../services/models/gemini");
+const { SESSION_CONFIG } = require("../services/models/constants");
 const { validateSearchRequest } = require("../middlewares/validator");
 const { searchLimiter } = require("../middlewares/rate-limit");
 
