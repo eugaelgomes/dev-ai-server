@@ -116,18 +116,19 @@ dev-ai-server/
 │   │   ├── rate-limit.js           # Limitação de requisições
 │   │   └── validator.js            # Validação de requests
 │   ├── routes/
-│   │   ├── health.routes.js        # Endpoint de saúde
 │   │   ├── home.routes.js          # Rota inicial
 │   │   ├── index.js                # Agregador de rotas
 │   │   ├── search.routes.js        # Rota principal de busca
 │   │   └── session.routes.js       # Gerenciamento de sessões
 │   ├── services/
 │   │   ├── constants.js            # Configurações e constantes
-│   │   ├── db.js                   # Conexão PostgreSQL
-│   │   ├── gemini.js               # Agent Google Gemini
-│   │   ├── message.service.js      # Serviço de mensagens
-│   │   ├── perplexity.js           # Agent Perplexity AI
-│   │   └── session.service.js      # Serviço de sessões
+│   │   ├── db/
+│   │   │   ├── db.js               # Conexão PostgreSQL
+│   │   │   ├── message.service.js  # Serviço de mensagens
+│   │   │   └── session.service.js  # Serviço de sessões
+│   │   └── models/
+│   │       ├── gemini.js           # Agent Google Gemini
+│   │       └── perplexity.js       # Agent Perplexity AI
 │   └── utils/
 │       ├── guard-rails.js          # Sistema de validação
 │       ├── message-context.js      # Contexto de conversas
