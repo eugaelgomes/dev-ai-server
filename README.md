@@ -11,7 +11,7 @@
 Seja bonzinho e não consuma muitos tokens (8 requisições, no máximo) :)
 
 - API em produção (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
-- Endpoint público (POST):[ https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)
+- Endpoint público (POST):[ https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)
 
 
 # 🛤️ Estrutura do GuardRails
@@ -196,7 +196,7 @@ npm start
 ## 👾 API - Exemplos e rotas
 
 - Local: `POST http://localhost:8080/search`
-- Produção(my domain, in this case): `POST https://dev-ai.codaweb.com.br/content/search`
+- Produção(my domain, in this case): `POST https://dev-ai.gaelgomes.dev/content/search`
 
 ### Requisição
 
@@ -264,7 +264,7 @@ Exemplo de resposta:
 Produção (Apidog recomendado para testar):
 
 ```bash
-curl -X POST https://dev-ai.codaweb.com.br/content/search \
+curl -X POST https://dev-ai.gaelgomes.dev/content/search \
   -H "Content-Type: application/json" \
   -d '{
     "message": "What is a REST API?",
@@ -291,4 +291,4 @@ curl -X POST http://localhost:8080/content/search \
 
 - Repositório: [https://github.com/eugaelgomes/dev-ai-server]([https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server)
 - Documentação/Testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
-- API pública: [https://dev-ai.codaweb.com.br/content/search](https://dev-ai.codaweb.com.br/content/search)
+- API pública: [https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)
