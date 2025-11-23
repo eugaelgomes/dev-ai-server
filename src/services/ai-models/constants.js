@@ -13,7 +13,7 @@ const VALID_MODELS = {
     "sonar-reasoning-pro",
     "sonar-deep-research",
   ],
-  gemini: ["gemini-2.5-flash", "gemini-3-pro-preview"],
+  gemini: ["gemini-2.5-flash", "gemini-3-pro-preview", "gemini-2.5-pro"],
 };
 
 const DEFAULT_MODELS = {

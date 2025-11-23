@@ -11,7 +11,7 @@
 Seja bonzinho e não consuma muitos tokens (8 requisições, no máximo) :)
 
 - API em produção (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
-- Endpoint público (POST):[ https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)
+- Endpoint público (POST):[ https://dev-ai.gaelgomes.dev/api/search](https://dev-ai.gaelgomes.dev/api/search)
 
 # 🛤️ Estrutura do GuardRails
 
@@ -121,22 +121,22 @@ dev-ai-server/
 │   │   └── validator.js            # Validação de requests
 │   ├── routes/
 │   │   ├── home.routes.js          # Rota inicial
-│   │   ├── index.js                # Agregador de rotas
+│   │   ├── index.routes.js         # Agregador de rotas
 │   │   ├── search.routes.js        # Rota principal de busca
 │   │   └── session.routes.js       # Gerenciamento de sessões
 │   ├── services/
-│   │   ├── constants.js            # Configurações e constantes
 │   │   ├── db/
 │   │   │   ├── db.js               # Conexão PostgreSQL
 │   │   │   ├── message.service.js  # Serviço de mensagens
 │   │   │   └── session.service.js  # Serviço de sessões
-│   │   └── models/
+│   │   └── ai-models/
+│   │       ├── constants.js        # Configurações dos modelos, contextos e provedores
 │   │       ├── gemini.js           # Agent Google Gemini
 │   │       └── perplexity.js       # Agent Perplexity AI
 │   └── utils/
 │       ├── guard-rails.js          # Sistema de validação
 │       ├── message-context.js      # Contexto de conversas
-│       └── library/
+│       └── guardrails-library/
 │           ├── base-subject.js     # Dicionário de termos tech
 │           └── off-topic.js        # Lista de bloqueio
 ├── eslint.config.js
@@ -200,7 +200,7 @@ npm start
 ## 👾 API - Exemplos e rotas
 
 - Local: `POST http://localhost:8080/search`
-- Produção(my domain, in this case): `POST https://dev-ai.gaelgomes.dev/content/search`
+- Produção(my domain, in this case): `POST https://dev-ai.gaelgomes.dev/api/search`
 
 ### Requisição
 
@@ -255,20 +255,12 @@ Exemplo de resposta:
 }
 ```
 
-### Sessões e Saúde
-
-- `GET /session/:sessionId` — detalhes da sessão
-- `GET /sessions` — lista sessões ativas
-- `DELETE /session/:sessionId` — remove uma sessão
-- `DELETE /sessions` — limpa todas as sessões
-- `GET /health` — status do servidor
-
 ## Exemplos
 
 Produção (Apidog recomendado para testar):
 
 ```bash
-curl -X POST https://dev-ai.gaelgomes.dev/content/search \
+curl -X POST https://dev-ai.gaelgomes.dev/api/search \
   -H "Content-Type: application/json" \
   -d '{
     "message": "What is a REST API?",
@@ -281,7 +273,7 @@ curl -X POST https://dev-ai.gaelgomes.dev/content/search \
 Local
 
 ```bash
-curl -X POST http://localhost:8080/content/search \
+curl -X POST http://localhost:8080/api/search \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Explique recursão em Python",
@@ -295,4 +287,4 @@ curl -X POST http://localhost:8080/content/search \
 
 - Repositório: [https://github.com/eugaelgomes/dev-ai-server](<[https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server>)
 - Documentação/Testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
-- API pública: [https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)
+- API pública: [https://dev-ai.gaelgomes.dev/api/search](https://dev-ai.gaelgomes.dev/api/search)
