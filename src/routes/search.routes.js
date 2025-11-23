@@ -2,14 +2,14 @@ const express = require("express");
 const Perplexity = require("@perplexity-ai/perplexity_ai");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const { getMessageContext } = require("../utils/message-context");
+const { getMessageContext } = require("../controllers/message-context");
 const {
   getSystemMessage: getPerplexitySystemMessage,
-} = require("../services/models/perplexity");
+} = require("../services/ai-models/perplexity");
 const {
   getSystemMessage: getGeminiSystemMessage,
-} = require("../services/models/gemini");
-const { SESSION_CONFIG } = require("../services/models/constants");
+} = require("../services/ai-models/gemini");
+const { SESSION_CONFIG } = require("../services/ai-models/constants");
 const { validateSearchRequest } = require("../middlewares/validator");
 const { searchLimiter } = require("../middlewares/rate-limit");
 

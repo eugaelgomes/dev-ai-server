@@ -1,6 +1,6 @@
 const express = require("express");
-const { getMessageContext } = require("../utils/message-context");
-const { SESSION_CONFIG } = require("../services/models/constants");
+const { getMessageContext } = require("../controllers/message-context");
+const { SESSION_CONFIG } = require("../services/ai-models/constants");
 
 const router = express.Router();
 const messageContext = getMessageContext(SESSION_CONFIG);

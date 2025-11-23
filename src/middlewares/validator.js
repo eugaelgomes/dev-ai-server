@@ -3,8 +3,8 @@ const {
   VALID_PROVIDERS,
   VALID_MODELS,
   DEFAULT_MODELS,
-} = require("../services/models/constants");
-const { applyGuardRails } = require("../utils/guard-rails");
+} = require("../services/ai-models/constants");
+const { applyGuardRails } = require("../controllers/guard-rails");
 
 /**
  * Middleware para validar o request do endpoint /search
@@ -91,7 +91,7 @@ function validateSearchRequest(req, res, next) {
   }
   req.selectedProvider = provider.toLowerCase();
 
-  // Validação do model (opcional, mas se fornecido deve ser válido para o provider)
+  // Validação do model (opcional)
   const providerModels = VALID_MODELS[req.selectedProvider];
   if (model && !providerModels.includes(model.toLowerCase())) {
     return res.status(400).json({

@@ -1,5 +1,5 @@
-const BASE_SUBJECT_KEYWORDS = require("./library/base-subject");
-const OFF_TOPIC_KEYWORDS = require("./library/off-topic");
+const BASE_SUBJECT_KEYWORDS = require("./guardrails-library/base-subject");
+const OFF_TOPIC_KEYWORDS = require("./guardrails-library/off-topic");
 
 const DIGIT_TO_LETTER = {
   0: "o",

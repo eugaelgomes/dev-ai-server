@@ -1,5 +1,5 @@
 const express = require("express");
-const routes = require("./routes");
+const routes = require("./routes/index.routes");
 const { generalLimiter } = require("./middlewares/rate-limit");
 const {
   errorHandler,
@@ -15,7 +15,7 @@ const baseMiddlewares = [express.json(), generalLimiter];
 const finalMiddlewares = [notFoundHandler, errorHandler];
 
 app.use(baseMiddlewares);
-app.use("/content", routes);
+app.use("/api", routes);
 app.use(finalMiddlewares);
 
 module.exports = app;
