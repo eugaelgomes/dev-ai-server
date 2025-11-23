@@ -13,11 +13,9 @@ Seja bonzinho e não consuma muitos tokens (8 requisições, no máximo) :)
 - API em produção (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
 - Endpoint público (POST):[ https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)
 
-
 # 🛤️ Estrutura do GuardRails
 
 O guard rails funciona como um filtro inteligente em três camadas, garantindo que apenas perguntas relevantes cheguem a LLM. O filtro é base código, onde há um dicionários de termos cognatos e/ou relacionados a tecologia (base_subjetcs). Além disso há os off_topics, no qual a função principal é barrar todo e qualquer conteúdo que fuja do escopo de desenvolvimento, análise de dados, infra, suporte tech e relacionados...
-
 
 **1. Normalização de Texto**
 
@@ -35,6 +33,7 @@ Limite de 2000 caracteres por mensagem. Isso evita abuso de tokens e mantém as 
 **3. Detecção de Padrões Suspeitos**
 
 Bloqueia tentativas de:
+
 - Repetição excessiva de caracteres
 - Prompt injection ("ignore previous instructions", "you are now...")
 - Comandos de sistema maliciosos
@@ -59,7 +58,6 @@ ista de termos claramente fora de escopo (culinária, esportes, política, moda,
 
 Falsos positivos - perguntas genéricas/sem termos tech podem ser bloquadas, dependência de key words, manutenção manual de dicionário, sem sentido semântico da frase, rigizes de regras em off topics.
 
-
 # 💻 Estrutura do Projeto
 
 ### Constants.js — Config padrão das LLMs
@@ -67,16 +65,19 @@ Falsos positivos - perguntas genéricas/sem termos tech podem ser bloquadas, dep
 O `constants.js` define:
 
 **Provedores e modelos válidos:**
+
 - Perplexity: sonar, sonar-pro, sonar-reasoning, sonar-reasoning-pro, sonar-deep-research
 - Gemini: gemini-2.5-flash
 
 **Assuntos especializados:**
+
 - `codigo`: Desenvolvimento de software, versionamento, debugging, arquitetura
 - `programacao`: Paradigmas, lógica, estruturas de dados, padrões
 - `dados`: ETL, modelagem, bancos de dados, estatística, visualização
 - `devops`: Infraestrutura, CI/CD, containers, cloud, monitoramento
 
 **Configurações de sessão:**
+
 - Máximo de 20 mensagens por sessão
 - Timeout de 30 minutos
 
@@ -87,17 +88,20 @@ Função `getCombinedContext()` que permite combinar múltiplos assuntos no mesm
 Provedores `gemini.js` e `perplexity.js` exportam uma função `getSystemMessage()` que definem **como** a IA deve se comportar - ou passa, ou bloqueia.
 
 **Regras de escopo rígidas:**
+
 - Responde APENAS sobre os assuntos escolhidos
 - Se fugir do tema, responde com uma mensagem padrão educada mas firme
 - Não aceita perguntas de outros assuntos, mesmo que técnicos
 
 **Estilo de resposta definido:**
+
 - **Objetivo**: Vai direto ao ponto, sem enrolação
 - **Assertivo**: Usa linguagem confiante, evita "talvez", "pode ser"
 - **Didático**: Explica do simples ao complexo
 - **Estruturado**: Resposta direta → explicação → exemplo → dicas
 
 **Formato markdown:**
+
 - Código em blocos
 - Listas e bullet points
 - Conciso mas completo
@@ -214,13 +218,13 @@ Body (JSON):
 
 Parâmetros:
 
-| Campo         | Tipo   | Obrigatório | Descrição                                                       |
-| ------------- | ------ | ------------ | ----------------------------------------------------------------- |
-| `message`   | string | Sim          | Mensagem/pergunta do usuário                                     |
-| `subject`   | string | Sim          | Assunto:`codigo`, `programacao` , `dados` ou todos juntos. |
-| `provider`  | string | Não         | Provedor:`perplexity` ou `gemini`.                            |
-| `model`     | string | Não         | Modelo do provedor                                                |
-| `sessionId` | string | Não         | ID de sessão para manter contexto (não precisa no 1° req)      |
+| Campo       | Tipo   | Obrigatório | Descrição                                                  |
+| ----------- | ------ | ----------- | ---------------------------------------------------------- |
+| `message`   | string | Sim         | Mensagem/pergunta do usuário                               |
+| `subject`   | string | Sim         | Assunto:`codigo`, `programacao` , `dados` ou todos juntos. |
+| `provider`  | string | Não         | Provedor:`perplexity` ou `gemini`.                         |
+| `model`     | string | Não         | Modelo do provedor                                         |
+| `sessionId` | string | Não         | ID de sessão para manter contexto (não precisa no 1° req)  |
 
 Modelos suportados:
 
@@ -289,6 +293,6 @@ curl -X POST http://localhost:8080/content/search \
 
 ## Links
 
-- Repositório: [https://github.com/eugaelgomes/dev-ai-server]([https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server)
+- Repositório: [https://github.com/eugaelgomes/dev-ai-server](<[https://github.com/eugaelgomes/](https://github.com/eugaelgomes/dev-ai-server)dev-ai-server>)
 - Documentação/Testes (Apidog): [https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35](https://share.apidog.com/fcc159fb-ffe2-4fac-9f93-983263024c35)
 - API pública: [https://dev-ai.gaelgomes.dev/content/search](https://dev-ai.gaelgomes.dev/content/search)

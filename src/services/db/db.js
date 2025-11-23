@@ -11,6 +11,22 @@ const pool = new Pool({
     rejectUnauthorized: false,
     //ca: process.env.SSL_CERTIFICATE,
   },
+  max: 20, // Máximo de clientes no pool
+  idleTimeoutMillis: 30000, // Cliente pode ficar ocioso por 30s
+  connectionTimeoutMillis: 2000, // Tempo máximo para conectar
+});
+
+// Tratamento de erros do pool
+pool.on("error", (err) => {
+  console.error("Unexpected error on idle client", err);
+});
+
+pool.on("connect", () => {
+  console.log("Database connected successfully");
+});
+
+pool.on("remove", () => {
+  console.log("Client removed from pool");
 });
 
 const getConnection = async () => {
